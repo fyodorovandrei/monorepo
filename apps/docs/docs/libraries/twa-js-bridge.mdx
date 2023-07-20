@@ -1,11 +1,11 @@
 ---
-sidebar_label: "@twa-dev/bridge"
-sidebar_position: 100
+sidebar_label: "@twa.js/bridge"
+sidebar_position: 1
 ---
 
-# @twa-dev/bridge
+# @twa.js/bridge
 
-<LibraryBadges pkg={'@twa-dev/bridge'}/>
+<LibraryBadges pkg={'@twa.js/bridge'}/>
 
 The package provides utilities to simplify communication between web
 applications and the Telegram native application. It also addresses
@@ -17,7 +17,7 @@ cross-application communication.
 
 ## Installation
 
-<NpmInstall pkg={'@twa-dev/bridge'}/>
+<NpmInstall pkg={'@twa.js/bridge'}/>
 
 ## Init
 
@@ -29,7 +29,7 @@ the Telegram application.
 To start using Bridge, simply utilize its static `init` function:
 
 ```typescript
-import {Bridge} from '@twa-dev/bridge';
+import {Bridge} from '@twa.js/bridge';
 
 const bridge = Bridge.init();
 ```
@@ -51,7 +51,7 @@ console. By default, this mode is disabled. To enable it, it is required to
 pass the `debug: true` option while creating a new `Bridge` instance.
 
 ```typescript
-import {Bridge} from '@twa-dev/bridge';
+import {Bridge} from '@twa.js/bridge';
 
 const bridge = Bridge.init({debug: true});
 ```
@@ -60,7 +60,7 @@ Or in case when an instance already exists, just change its `debug` property
 to `true`:
 
 ```typescript
-import {Bridge} from '@twa-dev/bridge';
+import {Bridge} from '@twa.js/bridge';
 
 const bridge = Bridge.init({debug: true});
 bridge.debug = true;
@@ -93,7 +93,7 @@ This method automatically finds a correct way of sending events which depends
 on the current environment. Let's take a look at a simple example:
 
 ```typescript
-import {Bridge} from '@twa-dev/bridge';
+import {Bridge} from '@twa.js/bridge';
 
 const bridge = Bridge.init();
 
@@ -105,7 +105,7 @@ Some methods don't require parameters and can be called without an additional
 second parameter representing the event payload. But some events do require it:
 
 ```typescript
-import {Bridge} from '@twa-dev/bridge';
+import {Bridge} from '@twa.js/bridge';
 
 const bridge = Bridge.init();
 
@@ -125,7 +125,7 @@ same type as `bridge.postEvent` (actually, the bridge uses the `postEvent`
 function internally):
 
 ```typescript
-import {postEvent} from '@twa-dev/bridge';
+import {postEvent} from '@twa.js/bridge';
 
 postEvent('web_app_setup_back_button', {is_visible: true});
 ```
@@ -145,11 +145,11 @@ use such methods as `on` and `subscribe`. To remove event listeners, we
 use `off` and `unsubscribe`:
 
 ```typescript
-import {BridgeEventListener, BridgeEventName, Bridge} from '@twa-dev/bridge';
+import {BridgeEventListener, BridgeEventName, Bridge} from '@twa.js/bridge';
 
 const bridge = Bridge.init();
 const listener: BridgeEventListener<'viewport_changed'> = payload => {
-  console.log('Viewport changed:', payload)
+  console.log('Viewport changed:', payload);
 };
 const subListener = (event: BridgeEventName, ...args: any[]) => {
   console.log('Event was called:', event, ...args);
@@ -173,7 +173,7 @@ version of the platform. To check, if the method is supported, you could use
 the `supports` function:
 
 ```typescript
-import {supports} from '@twa-dev/bridge';
+import {supports} from '@twa.js/bridge';
 
 supports('web_app_trigger_haptic_feedback', '6.0'); // false
 supports('web_app_trigger_haptic_feedback', '6.1'); // true

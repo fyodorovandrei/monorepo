@@ -1,6 +1,6 @@
-# @twa-dev/bridge
+# @twa.js/bridge
 
-<LibraryBadges pkg={'@twa-dev/bridge'}/>
+<LibraryBadges pkg={'@twa.js/bridge'}/>
 
 Пакет, который предоставляет утилиты для упрощения процесса взаимодействия
 между веб-приложениями и нативным приложением Telegram. Он также решает
@@ -12,7 +12,7 @@
 
 ## Установка
 
-<NpmInstall pkg={'@twa-dev/bridge'}/>
+<NpmInstall pkg={'@twa.js/bridge'}/>
 
 ## Инициализация
 
@@ -24,7 +24,7 @@
 Для создания этого компонента, необходимо использовать статичный метод `init`:
 
 ```typescript
-import {Bridge} from '@twa-dev/bridge';
+import {Bridge} from '@twa.js/bridge';
 
 const bridge = Bridge.init();
 ```
@@ -47,7 +47,7 @@ const bridge = Bridge.init();
 передать свойство `debug: true` при создании экземпляра `Bridge`.
 
 ```typescript
-import {Bridge} from '@twa-dev/bridge';
+import {Bridge} from '@twa.js/bridge';
 
 const bridge = Bridge.init({debug: true});
 ```
@@ -56,7 +56,7 @@ const bridge = Bridge.init({debug: true});
 его свойство `debug` на `true`:
 
 ```typescript
-import {Bridge} from '@twa-dev/bridge';
+import {Bridge} from '@twa.js/bridge';
 
 const bridge = Bridge.init({debug: true});
 bridge.debug = true;
@@ -94,7 +94,7 @@ const safeBridge = Bridge.init({targetOrigin: 'https://myendpoint.org'});
 отправки события исходя из текущей среды. Простой пример:
 
 ```typescript
-import {Bridge} from '@twa-dev/bridge';
+import {Bridge} from '@twa.js/bridge';
 
 const bridge = Bridge.init();
 
@@ -107,7 +107,7 @@ bridge.postEvent('web_app_close');
 вызова метода с опциями:
 
 ```typescript
-import {Bridge} from '@twa-dev/bridge';
+import {Bridge} from '@twa.js/bridge';
 
 const bridge = Bridge.init();
 
@@ -128,7 +128,7 @@ bridge.postEvent('web_app_open_popup', {
 `postEvent`):
 
 ```typescript
-import {postEvent} from '@twa-dev/bridge';
+import {postEvent} from '@twa.js/bridge';
 
 postEvent('web_app_setup_back_button', {is_visible: true});
 ```
@@ -146,7 +146,7 @@ postEvent('web_app_setup_back_button', {is_visible: true});
 события, мы используем `off` и `unsubscribe`:
 
 ```typescript
-import {BridgeEventListener, BridgeEventName, Bridge} from '@twa-dev/bridge';
+import {BridgeEventListener, BridgeEventName, Bridge} from '@twa.js/bridge';
 
 const bridge = Bridge.init();
 const listener: BridgeEventListener<'viewport_changed'> = payload => {
@@ -174,7 +174,7 @@ Web Apps текущей версией платформы. Для того чт�
 ли метод, можно использовать функцию `supports`:
 
 ```typescript
-import {supports} from '@twa-dev/bridge';
+import {supports} from '@twa.js/bridge';
 
 supports('web_app_trigger_haptic_feedback', '6.0'); // false
 supports('web_app_trigger_haptic_feedback', '6.1'); // true
