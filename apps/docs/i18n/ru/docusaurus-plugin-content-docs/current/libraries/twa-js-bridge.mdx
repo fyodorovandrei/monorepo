@@ -2,176 +2,83 @@
 
 <LibraryBadges pkg={'@twa.js/bridge'}/>
 
-Пакет, который предоставляет утилиты для упрощения процесса взаимодействия
-между веб-приложениями и нативным приложением Telegram. Он также решает
-кросс-платформенные проблемы наличия разницы в данных, сокращая время на
-решение известных проблем.
+Пакет, который предоставляет утилиты для упрощения процесса взаимодействия между веб-приложениями и нативным приложением Telegram. Он также решает кросс-платформенные проблемы наличия разницы в данных, сокращая время на решение известных проблем.
 
-Разработчики могут использовать данный пакет для создания собственных SDK, так
-как он предоставляет сугубо минимальный низкоуровневый контроль.
+Разработчики могут использовать данный пакет для создания собственных SDK, так как он предоставляет сугубо минимальный низкоуровневый контроль.
 
 ## Установка
 
 <NpmInstall pkg={'@twa.js/bridge'}/>
 
-## Инициализация
-
-Компонент `Bridge` имеет сравнительно простой API. Главная его цель
-заключается в предоставлении слоя для взаимодействия между текущим
-веб-приложением и нативными приложением Telegram. Он позволяет вызывать
-нативные методы, а также получать события от приложения Telegram.
-
-Для создания этого компонента, необходимо использовать статичный метод `init`:
-
-```typescript
-import {Bridge} from '@twa.js/bridge';
-
-const bridge = Bridge.init();
-```
-
-Данный метод создаст специальный обработчик события и поместит его в
-глобальный объект `window`. Этот обработчик используется Telegram для
-передачи информации о каких-либо событиях.
-
-:::info
-
-Метод `Bridge.init()` можно использовать столько раз, сколько потребуется. Его
-запуск не окажет влияния на уже созданные экземпляры `Bridge`.
-
-:::
-
-### Отладка
-
-`Bridge` поддерживает режим отладки, который выводит дополнительные сообщения
-в консоль. По умолчанию, этот режим отключен. Чтобы его включить, необходимо
-передать свойство `debug: true` при создании экземпляра `Bridge`.
-
-```typescript
-import {Bridge} from '@twa.js/bridge';
-
-const bridge = Bridge.init({debug: true});
-```
-
-В случае, когда экземпляр `Bridge` уже был создан, достаточно просто изменить
-его свойство `debug` на `true`:
-
-```typescript
-import {Bridge} from '@twa.js/bridge';
-
-const bridge = Bridge.init({debug: true});
-bridge.debug = true;
-```
-
-### Target origin
-
-В случае, если текущий экземпляр `Bridge` используется в Telegram Web, он
-использует такую функцию как `window.parent.postMessage`. Эта функция требует
-передачи `target origin`, который позволяет предостеречь текущее приложение
-от отправки недостоверному родительскому iframe-у. По умолчанию, используется
-значение `https://web.telegram.org`. Для его изменения необходимо использовать
-опцию `targetOrigin`:
-
-```typescript
-const unsafeBridge = Bridge.init({targetOrigin: '*'});
-// or
-const safeBridge = Bridge.init({targetOrigin: 'https://myendpoint.org'});
-```
-
-:::tip
-
-Не рекомендуется изменять это значение в production окружении, т.к. в противном
-случае это может привести к проблемам с безопасностью. Указывайте это значение
-только в целях тестирования, либо избегайте использования wildcard `*`.
-
-:::
-
 ## Вызов методов
 
-### С экземпляром `Bridge`
-
-Для вызова методов Telegram Web Apps, достаточно использовать метод
-`Bridge.postEvent`. Этот метод автоматически находит подходящий способ для
-отправки события исходя из текущей среды. Простой пример:
+Для того чтобы вызвать методы Telegram Web Apps, необходимо использовать функцию `postEvent`:
 
 ```typescript
-import {Bridge} from '@twa.js/bridge';
+import { postEvent } from '@twa.js/bridge';
 
-const bridge = Bridge.init();
-
-// Закрываем текущее приложение.
-bridge.postEvent('web_app_close');
+postEvent('web_app_setup_back_button', { is_visible: true });
 ```
 
-Некоторые методы не требуют параметров и могут быть вызваны без указания второго
-аргумента, который представляет собой опции для этого события. Пример
-вызова метода с опциями:
-
-```typescript
-import {Bridge} from '@twa.js/bridge';
-
-const bridge = Bridge.init();
-
-// Показываем всплывающее окно.
-bridge.postEvent('web_app_open_popup', {
-  title: 'Web Apps Notification',
-  message: 'I love Web Apps',
-  buttons: [{type: 'ok', id: 'ok'}]
-});
-```
-
-### Без экземпляра `Bridge`
-
-Этот модуль позволяет вызывать методы Telegram Web Apps без использования
-экземпляра `Bridge`. Для выполнения этого действия необходимо использовать
-функцию `postEvent`, которая по функциональности совпадает с функцией,
-описанной в предыдущем разделе (вообще, `Bridge.postEvent` использует
-`postEvent`):
-
-```typescript
-import {postEvent} from '@twa.js/bridge';
-
-postEvent('web_app_setup_back_button', {is_visible: true});
-```
-
-Тем не менее иногда необходимо обрабатывать события, вызываемые методами.
-Например, вы могли бы вызвать метод `web_app_request_theme`. Как результат,
-нативное приложение Telegram создаст событие `theme_changed`, которое
-необходимо отловить. Для этого варианта одной этой функции будет недостаточно
-и придется использовать `Bridge`.
+Эта функция автоматически находит корректный способ отправки уведомления в зависимости от особенностей текущей среды. Если быть более точным, то она определяет текущий тип приложения Telegram и выбирает подходящий алгоритм работы.
 
 ## Прослушивание событий
 
-Процесс прослушивания событий также является достаточном простым. Для этого
-мы используем такие методы как `on` и `subscribe`. Чтобы перестать прослушивать
-события, мы используем `off` и `unsubscribe`:
+### `on` и `off`
+
+Для начала работы с событиями можно использовать такие методы как `on` и `off`. Вот как выглядит базовое использование функции `on`:
 
 ```typescript
-import {BridgeEventListener, BridgeEventName, Bridge} from '@twa.js/bridge';
+import { on } from '@twa.js/bridge';
 
-const bridge = Bridge.init();
-const listener: BridgeEventListener<'viewport_changed'> = payload => {
-  console.log('Viewport changed:', payload)
+// Начинаем прослушивать событие "viewport_changed". Возвращаемое
+// значение является функцией, которая удаляет добавленного
+// слушателя.
+const removeListener = on('viewport_changed', payload => {
+  console.log('Viewport changed:', payload);
+});
+
+// Удаляем слушателя.
+removeListener();
+```
+
+Для остановки прослушивания событий можно также использовать функцию `off`:
+
+```typescript
+import { on, off, EventListener } from '@twa.js/bridge';
+
+const listener: EventListener<'viewport_changed'> = payload => {
+  console.log('Viewport changed:', payload);
 };
-const subListener = (event: BridgeEventName, ...args: any[]) => {
-  console.log('Event was called:', event, ...args);
+
+// Начинаем слушать событие.
+on('viewport_changed', listener);
+
+// Прекращаем слушать событие.
+off('viewport_changed', listener);
+```
+
+### `subscribe` и `unsubscribe`
+
+Для работы сразу со всеми события от нативного приложения Telegram можно использовать такие функции как `subscribe` и `unsubscribe`:
+
+```typescript
+import { subscribe, unsubscribe, GlobalEventListener } from '@twa.js/bridge';
+
+const listener: GlobalEventListener = (event, data) => {
+  console.log('Received event', event, 'with data', data);
 };
 
-// Добавить слушатель на специфичное событие.
-bridge.on('viewport_changed', listener);
+// Слушаем все события.
+subscribe(listener);
 
-// Добавить слушатель на все события.
-bridge.subscribe(subListener);
-
-// Примеры удаления слушателей.
-bridge.off('viewport_changed', listener);
-bridge.unsubscribe(subListener);
+// Удаляем глобального слушателя.
+unsubscribe(listener);
 ```
 
 ## Проверка поддержки метода
 
-Сам по себе компонент `Bridge` не проверяет, поддерживается ли метод
-Web Apps текущей версией платформы. Для того чтобы проверить, поддерживается
-ли метод, можно использовать функцию `supports`:
+Сама по себе функция `postEvent` не проверяет, поддерживается ли указанный метод текущим нативным приложением Telegram. Для этого используется такая функция как `supports`, которая принимает наименование необходимого метода и текущую векрсию платформы:
 
 ```typescript
 import {supports} from '@twa.js/bridge';
@@ -182,16 +89,37 @@ supports('web_app_trigger_haptic_feedback', '6.1'); // true
 
 :::tip
 
-Рекомендуется всегда использовать эту функцию перед вызовом методов Web Apps.
-В противном случае приложение может иметь неожидаемое поведение.
+Рекомендуется всегда использовать эту функцию перед вызовом методов Web Apps. В противном случае приложение может иметь неожидаемое поведение.
 
 :::
 
-[//]: # (## Higher-level control)
+### Отладка
+
+Пакет поддерживает включение режима отладки, который приводит к выводу сообщений, связанных с внутренними процессами пакета. Для изменения режима отладки необходимо использовать функцию `setDebug`:
+
+```typescript
+import { setDebug } from '@twa.js/bridge';
+
+setDebug(true);
+```
+
+## Target origin
+
+В случае, если пакет используется в барузерной среде (iframe), для вызова метода он использут такую функцию как `window.parent.postMessage`. Этот метод требует указания target origin, который предотвращает отправку данных недоверенным родительским фреймам. По умолчанию, пакет использует значение равное `https://web.telegram.org`. Для того чтобы разрешить передачу данных другим фреймам, используйте функцию `setTargetOrigin`:
+
+```typescript
+import { setTargetOrigin } from '@twa.js/bridge';
+
+setTargetOrigin('https://myendpoint.org');
+```
+
+:::caution
+
+Не рекомендуется изменять это значение в production окружении, т.к. в противном случае это может привести к проблемам с безопасностью. Указывайте это значение только в целях тестирования, либо избегайте использования wildcard `*`.
+
+:::
+
+[//]: # (## Более верхнеуровневый контроль)
 
 [//]: # ()
-[//]: # (As long as the bridge provides only low-level control, we recommend using)
-
-[//]: # ([SDK]&#40;twa-js-sdk/about&#41; which implements bridge methods. It also provides)
-
-[//]: # (additional parameter checks, more intuitive method names, and easier usage.)
+[//]: # (Ввиду того что пакет предоставляет только низкоуровневый контроль для работы с данными, рекомендуется использовать [SDK]&#40;twa-js-sdk/about&#41;, который в свою очередь использует методы текущего пакета. SDK предоставляет дополнительные проверки параметров, более интуитивные наименования методов, а также более простое использование.)
