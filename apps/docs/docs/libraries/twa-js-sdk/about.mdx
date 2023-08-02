@@ -58,6 +58,23 @@ Enables the debug mode, which results in printing more debugging information sen
 
 Enabling the mode in which calls to methods not supported by the current version of the Web App will result in throwing an error is recommended and enabled by default.
 
+#### `cssVars: boolean`
+
+Creates global CSS variables connected to the current application theme parameters and web app colors. The created variables are automatically updated when corresponding values in the theme parameters or web app change.
+
+Web App variables:
+- `--tg-bg-color`
+- `--tg-header-color`
+
+Theme parameters variables:
+- `--tg-theme-bg-color`
+- `--tg-theme-button-color`
+- `--tg-theme-button-text-color`
+- `--tg-theme-hint-color`
+- `--tg-theme-link-color`
+- `--tg-theme-secondary-bg-color`
+- `--tg-theme-text-color`
+
 #### `targetOrigin: string`
 
 Updates the global target origin, which is used by the bridge's `postEvent` function. This restricts the list of parent iframes that are allowed to receive data from the current application. To learn more about this option, please refer to the [documentation](../twa-js-bridge#target-origin).
