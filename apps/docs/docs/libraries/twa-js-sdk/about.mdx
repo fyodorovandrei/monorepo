@@ -54,6 +54,10 @@ init(options);
 
 Enables the debug mode, which results in printing more debugging information sent by the SDK.
 
+#### `launchParams: string | URLSearchParams | LaunchParams`
+
+Allows specifying custom launch parameters to be used by `init` function. In case, this parameter is not specified, `init` will utilize the `retrieveLaunchParams` function.
+
 #### `checkCompat: boolean`
 
 Enabling the mode in which calls to methods not supported by the current version of the Web App will result in throwing an error is recommended and enabled by default.
