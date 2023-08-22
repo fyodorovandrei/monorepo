@@ -83,6 +83,12 @@ Theme parameters variables:
 
 Updates the global target origin, which is used by the bridge's `postEvent` function. This restricts the list of parent iframes that are allowed to receive data from the current application. To learn more about this option, please refer to the [documentation](../twa-js-bridge#target-origin).
 
+#### `timeout: number`
+
+*Default: 1000*
+
+The duration, in milliseconds, in which initialization should be completed. If the timeout is reached, an error will be thrown.
+
 ## Launch parameters
 
 The launch parameters are the initial parameters passed to the Web App. You can find more information about them in the [documentation](../../launch-params/about).
