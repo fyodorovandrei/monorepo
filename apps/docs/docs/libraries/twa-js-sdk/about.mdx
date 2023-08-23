@@ -123,6 +123,22 @@ console.log(retrieveLaunchParams());
 
 This function needs no SDK initialization or something like that. It attempts to extract the launch parameters from the `window.location`. In case, they are invalid or missing, the function will try to extract these parameters from the `sessionStorage`. This function is safe to be used when a user reloads Web App via the `Reload Page` application button.
 
+## Detecting current environment
+
+Sometimes, it can be useful to check if the current environment is Telegram Web Apps. To determine whether an application is running in Telegram Web Apps, a developer could utilize the `isTWA` function:
+
+```typescript
+import { isTWA } from '@twa.js/sdk';
+
+console.log(isTWA()); // true or false
+```
+
+:::info
+
+`isTWA` utilizes `retrieveLaunchParams` function which attempts to extract the current launch parameters.
+
+:::
+
 ## Components
 
 All components in this package are supposed to be used as singletons. This means that you should not create multiple instances of the same component and use them, even if it is not explicitly forbidden. However, in this case, there is no guarantee that everything will work fine.
