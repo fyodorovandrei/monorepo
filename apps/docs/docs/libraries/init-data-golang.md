@@ -9,7 +9,7 @@ The package provides utilities to work with the initialization data of Telegram 
 ## Installation
 
 ```bash
-go get github.com/telegram-web-apps/init-data-golang
+go get github.com/Telegram-Web-Apps/init-data-golang
 ```
 
 ## Validation
