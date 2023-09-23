@@ -44,7 +44,7 @@ const config = {
       ({
         docs: {
           sidebarPath: require.resolve('./sidebars.js'),
-          editUrl: 'https://github.com/twa-dev/docs/tree/master/',
+          editUrl: 'https://github.com/twa-dev/monorepo/blob/master/apps/docs',
         },
         blog: false,
         theme: {customCss: require.resolve('./src/css/custom.scss')},
